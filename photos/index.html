@@ -62,7 +62,7 @@
 <meta property="og:site_name" content="winger训练营">
 <meta property="og:description" content=".main-inner{         width: 100%;     }     .main {     padding-bottom: 150px;     margin-top: 0px;     background: #121212;     }     .main-inner{         margin-top: unset;     }     .page-post">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-10-15T20:38:29.555Z">
+<meta property="og:updated_time" content="2019-10-15T20:41:46.477Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="photo">
 <meta name="twitter:description" content=".main-inner{         width: 100%;     }     .main {     padding-bottom: 150px;     margin-top: 0px;     background: #121212;     }     .main-inner{         margin-top: unset;     }     .page-post">
@@ -504,7 +504,7 @@ function loadXMLDoc(xmlUrl)
     }
     return xmlDoc; 
 }
-
+var weblink="wingerzengimage.oss-cn-beijing.aliyuncs.com"
 var xmllink="wingerzengimage.oss-cn-beijing.aliyuncs.com/image.xml"
 //访问域名链接就是我上面提到的那个访问域名xml链接
 
@@ -542,13 +542,13 @@ for (var i = 0; i < content.length; i++) {
     box.appendChild(conBox);
     var item=document.createElement("div");
     var title=content[i][0].url;
-    item.innerHTML="<button class=title style=background:url("+xmllink+'/'+title+"封面.jpg"+");><span style=display:inline;><strong style=color:#f0f3f6; >"+title.substring(0,title.length-1)+"</strong></span></button>";
+    item.innerHTML="<button class=title style=background:url("+weblink+'/'+title+"封面.jpg"+");><span style=display:inline;><strong style=color:#f0f3f6; >"+title.substring(0,title.length-1)+"</strong></span></button>";
     conBox.appendChild(item);
 
     for (var j = 1; j < content[i].length && j < showNum+1; j++) {
         var con=content[i][j].url;
         var item=document.createElement("li");
-        item.innerHTML="<div class=imgbox id=imgbox style=height:"+wid+"px;><img class=imgitem src="+xmllink+'/'+title+con+" alt="+con+"></div><span>"+con.substring(0,con.length-4)+"</span><p>上传于"+content[i][j].date+"</p>";
+        item.innerHTML="<div class=imgbox id=imgbox style=height:"+wid+"px;><img class=imgitem src="+weblink+'/'+title+con+" alt="+con+"></div><span>"+con.substring(0,con.length-4)+"</span><p>上传于"+content[i][j].date+"</p>";
         conBox.appendChild(item);
     }
     if(content[i].length > showNum){
@@ -574,7 +574,7 @@ function moreClick(obj,cur,cont,title){
         console.log( Number(showNum) + Number(begin));
         var con=cont[j].url;
         var item=document.createElement("li");
-        item.innerHTML="<div class=imgbox id=imgbox style=height:"+wid+"px;><img class=imgitem src="+xmllink+'/'+title+con+" alt="+con+"></div><span>"+con.substring(0,con.length-4)+"</span><p>上传于"+cont[j].date+"</p>";
+        item.innerHTML="<div class=imgbox id=imgbox style=height:"+wid+"px;><img class=imgitem src="+weblink+'/'+title+con+" alt="+con+"></div><span>"+con.substring(0,con.length-4)+"</span><p>上传于"+cont[j].date+"</p>";
         parent.appendChild(item);
     }
     if(cont.length > j){
