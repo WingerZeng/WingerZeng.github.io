@@ -55,17 +55,17 @@
   };
 </script>
 
-  <meta name="description" content=".main-inner{         width: 100%;     } /*    .main {     padding-bottom: 150px;     margin-top: 0px;     background: #121212;     }*/     .main-inner{         margin-top: unset;     }     .page-">
+  <meta name="description" content=".main-inner{         width: 100%;     }     .post-title , .post-meta{         display: none;     }     .content-wrap{         vertical-align: top;         padding-top: 0;         line-height:">
 <meta property="og:type" content="website">
 <meta property="og:title" content="photo">
 <meta property="og:url" content="http://www.wingerzeng.com/photos/index.html">
 <meta property="og:site_name" content="winger训练营">
-<meta property="og:description" content=".main-inner{         width: 100%;     } /*    .main {     padding-bottom: 150px;     margin-top: 0px;     background: #121212;     }*/     .main-inner{         margin-top: unset;     }     .page-">
+<meta property="og:description" content=".main-inner{         width: 100%;     }     .post-title , .post-meta{         display: none;     }     .content-wrap{         vertical-align: top;         padding-top: 0;         line-height:">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-10-16T10:49:35.821Z">
+<meta property="og:updated_time" content="2019-10-16T18:40:53.428Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="photo">
-<meta name="twitter:description" content=".main-inner{         width: 100%;     } /*    .main {     padding-bottom: 150px;     margin-top: 0px;     background: #121212;     }*/     .main-inner{         margin-top: unset;     }     .page-">
+<meta name="twitter:description" content=".main-inner{         width: 100%;     }     .post-title , .post-meta{         display: none;     }     .content-wrap{         vertical-align: top;         padding-top: 0;         line-height:">
   <link rel="canonical" href="http://www.wingerzeng.com/photos/">
 
 
@@ -276,216 +276,82 @@
       
       
       <div class="post-body">
-          <style type="text/css">
+          <style type="text/css">    
     .main-inner{
         width: 100%;
     }
-/*    .main {
-    padding-bottom: 150px;
-    margin-top: 0px;
-    background: #121212;
-    }*/
-    .main-inner{
-        margin-top: unset;
-    }
-    .page-post-detail .post-meta{
+    .post-title , .post-meta{
         display: none;
     }
-    /*
-    body {
-        background-image: unset;
-        background-attachment: unset;
-        background-size: 100%;
-        /*background-position: top left;
-    }*/
     .content-wrap{
         vertical-align: top;
         padding-top: 0;
         line-height: 0;
     }
-    .header{
-        background: rgba(28, 25, 25, 0.6);
-        border-bottom: unset;
-        margin: 0;
-    }
-/*    .menu .menu-item a{
-            font-weight: 300;
-            color: #e6eaed;
-    }*/
 
-    .imgbox{
-     width: 100%;
-     overflow: hidden;
-     height: 100%;
-     border-right: 1px solid #bcbcbc;
+    .button-more{
+        width: 100%;
+        display: block;
+        vertical-align: middle;
+        text-align: center;
+        font: 30px/100px 'ChaletComprimeMilanSixty';
+        color: #686868;
+        height: 100px;
+        background-color: #fff;
+        border: unset;
     }
-    .box{
-        visibility: visible;
-        overflow: auto; 
-        zoom: 1;
+
+    .title{
+        display: block;
+        width: auto;
+        height: 200px;
+        font: 30px/200px 'ChaletComprimeMilanSixty';
+        vertical-align: middle;
+        text-align: center;
+        background-position: center center;
+        background-size: cover !important; 
+        background-repeat: no-repeat;
+        border: unset;
+        margin: 2% 5%;
+        /*计算宽度时，把margin计算在内，否则会超出外面*/
+        box-sizing: border-box;
+        overflow: hidden !important;
     }
     .box li{
-    float: left;
-    width: 32.33%;
-    height: auto;
-    position: relative;
-    overflow: hidden;
-    text-align: center;
-    list-style: none;
-    margin: 0.5% 0.5%;
-    display: inline
-    padding: 0;
-    /*height: 360px;*/
+        display: inline-block;
+        width: 23%;
+        margin: 1% 1%;
+        text-align: center;
+    }
+    .container{
+        display: inline-block;
+        width: 100%;
+　　　　 position: relative;
+　　　　/*出发BFC，否则内部元素撑不开container*/
+    }
+    .bracket{
+        margin-top: 75%;
+    }
+    .imgitem{
+        position: absolute ;
+        top: 0 ;
+        bottom: 0 ;
+        left: 0 ;
+        right: 0 ;
+        background-position: center !important;
+        background-size: 100% auto !important;
+        background-repeat: no-repeat !important;
     }
     .box li span{
-    display: block;
-    padding: 3% 1% 3% 1%;
-    min-height: 30px;
-    color: #686868;
-    font-size: 16px;
-    background: #fff;
-    font-weight: 600;
-    line-height: 20px;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
+        line-height: 30px;
     }
 
-    img.imgitem{
-        padding: unset;
-        padding: unset;
-        border: unset;
-        position: relative;
-        padding: 0px;
-        /*height: auto;
-        width: auto;*/
-    }
-
-
-div#posts.posts-expand {
-    border: unset;
-    padding: unset;
-    margin: 0;
-    padding: 0;
-    vertical-align: top;
-}
-.posts-expand .post-body img{
-    padding: 0px !important;
-}
-.box p{
-    display: block;
-    background: #fff;
-    color: #686868;
-    font-size: 12px;
-    font-family: 'SwisMedium';
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    text-align: center;
-}
-
-.box span strong{
-    background: rgba(0,0,0,0.4);
-    padding: 20px;
-}
-
-.posts-expand .post-title {
-    display: none;
-}
-.posts-expand {
-    padding: 0;
-}
-.post-block {
-    margin: 0;
-}
-.title{
-    display: inline-block;
-    vertical-align: middle;
-    background: url(https://image.idealli.com/bg11.jpg);
-    font: 85px/250px 'ChaletComprimeMilanSixty';
-    background-position: center center !important;
-    color: #fff;
-    background-size: 100% auto !important; 
-    -webkit-background-size: cover; 
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    margin: 1% 1%;
-    width: 100%;
-    height: 300px;
-    text-align: center;
-    border: unset;
-    cursor: unset !important;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    line-height: 0;
-}
-.title span{
-    line-height: 0;
-}
-.btn-more-posts{
-    display: inline-block;
-    vertical-align: middle;
-    font: 40px/150px 'ChaletComprimeMilanSixty';
-    color: #686868;
-    width: 100%;
-    text-align: center;
-    border: unset;
-    height: 200px;
-    background-color: #fff;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-}
-
-@media (max-width: 767px){
-    .box li {
-    width: 100%;
-}
-.title {
-    height: 200px;
-}
-
-.box span {
-    min-height: 80px;
-    border-right: unset;
-    font-size: 17px;
-}
-.box p{
-    border-right: unset;
-    font-size: 12px;
-
-}
-div#comments.comments.v {
-    width: 96%;
-    padding-top: 50px;
-}
-
-
-}
-
-@media (min-width: 1600px){
-    .container .main-inner{
-        width: 100%;
-    }
-}
-/*
-.footer{
-    background-color: #121212 !important;
-}*/
-.v * {
-    color: #f4f4f4 !important;
-}
-
-.v .vwrap .vmark .valert .vcode {
-    background: #00050b !important;
-}
-
-</style><a id="more"></a>
+</style><a id="more"></a>    
 
 <div id="box" class="box"></div>
 
-
 <script type="text/javascript">
-
-function loadXMLDoc(xmlUrl) 
-{
+function loadXMLDoc(xmlUrl) {
     try //Internet Explorer
     {
         xmlDoc=new ActiveXObject("Microsoft.XMLDOM");
@@ -523,16 +389,11 @@ function loadXMLDoc(xmlUrl)
 }
 var weblink="https://wingerzengimage.oss-cn-beijing.aliyuncs.com"
 var xmllink="https://wingerzengimage.oss-cn-beijing.aliyuncs.com/image.xml"
-//访问域名链接就是我上面提到的那个访问域名xml链接
-
 xmlDoc=loadXMLDoc(xmllink);
 var urls=xmlDoc.getElementsByTagName('Key');
 var date=xmlDoc.getElementsByTagName('LastModified');
-var wid=250;
 var showNum=12; //每个相册一次展示多少照片
-if ((window.innerWidth)>1200) {wid=(window.innerWidth*3)/18;}
 var box=document.getElementById('box');
-var i=0;
 
 var content=new Array();
 var tmp=0;
@@ -560,62 +421,43 @@ function DrawImage(ImgObj, maxWidth, maxHeight){
     var tempWidth;
     var tempHeight;
 
-    // if(image.width > 0 && image.height > 0){
-    //     //原图片宽高比例 大于 指定的宽高比例，这就说明了原图片的宽度必然 > 高度
-    //     if (image.width/image.height >= maxWidth/maxHeight) {
-    //         if (image.width > maxWidth) {
-    //             tempWidth = maxWidth;
-    //             // 按原图片的比例进行缩放
-    //             tempHeight = (image.height * maxWidth) / image.width;
-    //         } else {
-    //             // 按原图片的大小进行缩放
-    //             tempWidth = image.width;
-    //             tempHeight = image.height;
-    //         }
-    //     } else {// 原图片的高度必然 > 宽度
-    //         if (image.height > maxHeight) {  
-    //             tempHeight = maxHeight;
-    //             // 按原图片的比例进行缩放
-    //             tempWidth = (image.width * maxHeight) / image.height;      
-    //         } else {
-    //             // 按原图片的大小进行缩放
-    //             tempWidth = image.width;
-    //             tempHeight = image.height;
-    //         }
-    //     }
-    //     // 设置页面图片的宽和高
-    //     ImgObj.height = tempHeight;
-    //     ImgObj.width = tempWidth;
+    // var rate = Math.random() + 0.5;
+    // var baselength = window.innerWidth() /;
+    // if(image.width >= image.height){
+    //     ImgObj.width  = baselength*rate*image.width/image.height;
+    //     ImgObj.height = baselength*rate;
     // }
-
-    if(image.width/image.height < maxWidth/maxHeight){
-        if (image.height > maxWidth){
-            tempWidth = maxHeight * image.width / image.height;
-            tempHeight = maxHeight
-            ImgObj.height = tempHeight;
-            ImgObj.width = tempWidth;
-        }
-    }
+    // else{
+    //     ImgObj.height  = baselength*rate*image.height/image.width;
+    //     ImgObj.width = baselength*rate;
+    // }
 }
+function CalHtml(weblink,title,con,date,conBox){
+    var item=document.createElement("li");
+    item.innerHTML = "<div class=\"container\"><div class=\"bracket\"></div><div class=imgitem style=background:url("+weblink+'/'+title+con+");></div></div><span>"+con.substring(0,con.length-4)+"</span>";
+    conBox.appendChild(item);
+}
+function CalTitle(weblink,title,conBox){
+    var item=document.createElement("div");
+    item.innerHTML="<div class=title style=background:url("+weblink+'/'+title+"封面.jpg"+");><span style=display:inline;><strong style=color:#f0f3f6; >"+title.substring(0,title.length-1)+"</strong></span></div>";
+    conBox.appendChild(item);
+}
+
+
 for (var i = 0; i < content.length; i++) {
     var conBox=document.createElement("div");
     conBox.id='conBox'+i;
     box.appendChild(conBox);
-    var item=document.createElement("div");
     var title=content[i][0].url;
-    item.innerHTML="<button class=title style=background:url("+weblink+'/'+title+"封面.jpg"+");><span style=display:inline;><strong style=color:#f0f3f6; >"+title.substring(0,title.length-1)+"</strong></span></button>";
-    conBox.appendChild(item);
+    CalTitle(weblink,title,conBox);
 
     for (var j = 1; j < content[i].length && j < showNum+1; j++) {
         var con=content[i][j].url;
-        var item=document.createElement("li");
-        //item.innerHTML="<div class=imgbox id=imgbox style=height:"+wid+"px align;><img class=imgitem src="+weblink+'/'+title+con+" alt="+con+"></div><span>"+con.substring(0,con.length-4)+"</span><p>上传于"+content[i][j].date+"</p>";
-        item.innerHTML="<div class=imgbox id=imgbox;><img class=imgitem src="+weblink+'/'+title+con+" alt="+con+" onload=\"javascript:DrawImage(this,400,500)\"/></div><span>"+con.substring(0,con.length-4)+"</span><p>上传于"+content[i][j].date+"</p>";
-        conBox.appendChild(item);
+        CalHtml(weblink,title,con,date,conBox);
     }
     if(content[i].length > showNum){
         var moreItem=document.createElement("button");
-        moreItem.className="btn-more-posts";
+        moreItem.className="button-more";
         moreItem.id="more"+i;
         moreItem.value=showNum+1;
         let cur=i;
@@ -635,16 +477,13 @@ function moreClick(obj,cur,cont,title){
     for ( ; j < cont.length && j < Number(showNum) + Number(begin); j++) {
         console.log( Number(showNum) + Number(begin));
         var con=cont[j].url;
-        var item=document.createElement("li");
-        item.innerHTML="<div class=imgbox id=imgbox ;><img class=imgitem src="+weblink+'/'+title+con+" alt="+con+" onload=\"javascript:DrawImage(this,400,500)\"/></div><span>"+con.substring(0,con.length-4)+"</span><p>上传于"+cont[j].date+"</p>";
-        parent.appendChild(item);
+        CalHtml(weblink,title,con,date,conBox);
     }
     if(cont.length > j){
         obj.value=j;
         parent.appendChild(obj);
     }
 }
-
 
 </script>
         
