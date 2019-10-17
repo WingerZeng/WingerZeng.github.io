@@ -62,7 +62,7 @@
 <meta property="og:site_name" content="winger训练营">
 <meta property="og:description" content=".main-inner{         width: 100%;     }     .post-title , .post-meta{         display: none;     }     .content-wrap{         vertical-align: top;         padding-top: 0;         line-height:">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-10-17T05:42:04.929Z">
+<meta property="og:updated_time" content="2019-10-17T16:06:49.543Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="photo">
 <meta name="twitter:description" content=".main-inner{         width: 100%;     }     .post-title , .post-meta{         display: none;     }     .content-wrap{         vertical-align: top;         padding-top: 0;         line-height:">
@@ -470,7 +470,7 @@ function DrawImage(ImgObj, maxWidth, maxHeight){
 }
 function CalHtml(weblink,title,con,date,conBox){
     var item=document.createElement("li");
-    item.innerHTML = "<div class=\"container\"><div class=\"bracket\"></div><img class=imgitem src=\""+weblink+'/'+title+con+"\" alt=\""+con+"\"></img></div><span>"+con.substring(0,con.length-4)+"</span>";
+    item.innerHTML = "<div class=\"container\"><div class=\"bracket\"></div><img class=imgitem src=\""+weblink+'/'+title+con+"?x-oss-process=style/scroll\" alt=\""+con+"\"></img></div><span>"+con.substring(0,con.length-4)+"</span>";
     conBox.appendChild(item);
 }
 function CalTitle(weblink,title,conBox){
@@ -522,6 +522,7 @@ function moreClick(obj,cur,cont,title){
 }
 
 </script>
+<script type="text/javascript" src="/js/image.js"></script>>
         
       </div>
       
