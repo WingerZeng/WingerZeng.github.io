@@ -58,15 +58,15 @@
   <meta name="description" content=".main-inner{         width: 100%;     }     .post-title , .post-meta{         display: none;     }     .content-wrap{         vertical-align: top;         padding-top: 0;         line-height:">
 <meta property="og:type" content="website">
 <meta property="og:title" content="photo">
-<meta property="og:url" content="http://www.wingerzeng.com/photos/index.html">
+<meta property="og:url" content="http://wingerzeng.com/photos/index.html">
 <meta property="og:site_name" content="winger训练营">
 <meta property="og:description" content=".main-inner{         width: 100%;     }     .post-title , .post-meta{         display: none;     }     .content-wrap{         vertical-align: top;         padding-top: 0;         line-height:">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-10-16T18:40:53.428Z">
+<meta property="og:updated_time" content="2019-10-17T05:27:41.578Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="photo">
 <meta name="twitter:description" content=".main-inner{         width: 100%;     }     .post-title , .post-meta{         display: none;     }     .content-wrap{         vertical-align: top;         padding-top: 0;         line-height:">
-  <link rel="canonical" href="http://www.wingerzeng.com/photos/">
+  <link rel="canonical" href="http://wingerzeng.com/photos/">
 
 
 <script id="page-configurations">
@@ -292,11 +292,12 @@
     .button-more{
         width: 100%;
         display: block;
-        vertical-align: middle;
+        vertical-align: text-top;
         text-align: center;
-        font: 30px/100px 'ChaletComprimeMilanSixty';
-        color: #686868;
-        height: 100px;
+        font: 16px/40px '微软雅黑';
+        color: #686868 !important;
+        height: 40px;
+        margin-bottom: 30px;
         background-color: #fff;
         border: unset;
     }
@@ -305,7 +306,7 @@
         display: block;
         width: auto;
         height: 200px;
-        font: 30px/200px 'ChaletComprimeMilanSixty';
+        font: 30px/200px '微软雅黑';
         vertical-align: middle;
         text-align: center;
         background-position: center center;
@@ -330,20 +331,28 @@
 　　　　/*出发BFC，否则内部元素撑不开container*/
     }
     .bracket{
-        margin-top: 75%;
+        margin-top: 85%;
     }
     .imgitem{
-        position: absolute ;
+        display: block;
+        position: absolute;
         top: 0 ;
         bottom: 0 ;
         left: 0 ;
         right: 0 ;
-        background-position: center !important;
+        width: 100%;
+        height: 100%;
+        object-fit: contain; !important;
+        border:unset !important;
+        padding: 0 !important;
+        margin: 0 !important;
+/*        background-position: center !important;
         background-size: 100% auto !important;
-        background-repeat: no-repeat !important;
+        background-repeat: no-repeat !important;*/
     }
     .box li span{
         line-height: 30px;
+        display: none;
     }
 
 </style><a id="more"></a>    
@@ -434,7 +443,7 @@ function DrawImage(ImgObj, maxWidth, maxHeight){
 }
 function CalHtml(weblink,title,con,date,conBox){
     var item=document.createElement("li");
-    item.innerHTML = "<div class=\"container\"><div class=\"bracket\"></div><div class=imgitem style=background:url("+weblink+'/'+title+con+");></div></div><span>"+con.substring(0,con.length-4)+"</span>";
+    item.innerHTML = "<div class=\"container\"><div class=\"bracket\"></div><img class=imgitem src=\""+weblink+'/'+title+con+"\" alt=\""+con+"\"></img></div><span>"+con.substring(0,con.length-4)+"</span>";
     conBox.appendChild(item);
 }
 function CalTitle(weblink,title,conBox){
@@ -464,7 +473,7 @@ for (var i = 0; i < content.length; i++) {
         moreItem.onclick= function (){
             moreClick(this,cur,content[cur],content[cur][0].url);
         }
-        moreItem.innerHTML="<span style=display:inline;><strong style=color:#f0f3f6;>加载更多</strong></span>";
+        moreItem.innerHTML="<span><i>················加载更多················</i></span>";
         conBox.appendChild(moreItem);
     }
 }
@@ -477,7 +486,7 @@ function moreClick(obj,cur,cont,title){
     for ( ; j < cont.length && j < Number(showNum) + Number(begin); j++) {
         console.log( Number(showNum) + Number(begin));
         var con=cont[j].url;
-        CalHtml(weblink,title,con,date,conBox);
+        CalHtml(weblink,title,con,date,parent);
     }
     if(cont.length > j){
         obj.value=j;
