@@ -62,7 +62,7 @@
 <meta property="og:site_name" content="winger训练营">
 <meta property="og:description" content=".main-inner{         width: 100%;     }     .post-title , .post-meta{         display: none;     }     .content-wrap{         vertical-align: top;         padding-top: 0;         line-height:">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-10-17T16:06:49.543Z">
+<meta property="og:updated_time" content="2019-10-22T12:43:20.947Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="photo">
 <meta name="twitter:description" content=".main-inner{         width: 100%;     }     .post-title , .post-meta{         display: none;     }     .content-wrap{         vertical-align: top;         padding-top: 0;         line-height:">
@@ -428,7 +428,8 @@ var xmllink="https://wingerzengimage.oss-cn-beijing.aliyuncs.com/image.xml"
 xmlDoc=loadXMLDoc(xmllink);
 var urls=xmlDoc.getElementsByTagName('Key');
 var date=xmlDoc.getElementsByTagName('LastModified');
-var showNum=12; //每个相册一次展示多少照片
+var showNum=8; //每个相册一次展示多少照片
+var moreNum=16;
 var box=document.getElementById('box');
 
 var content=new Array();
@@ -510,8 +511,7 @@ function moreClick(obj,cur,cont,title){
     parent.removeChild(obj);
     var j=obj.value;
     var begin=j;
-    for ( ; j < cont.length && j < Number(showNum) + Number(begin); j++) {
-        console.log( Number(showNum) + Number(begin));
+    for ( ; j < cont.length && j < Number(moreNum) + Number(begin); j++) {
         var con=cont[j].url;
         CalHtml(weblink,title,con,date,parent);
     }
