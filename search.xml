@@ -29,7 +29,7 @@
 <figure class="highlight cpp"><figcaption><span>shader.fs</span></figcaption><table><tr><td class="code"><pre><span class="line"><span class="meta">#version 430 core</span></span><br><span class="line">out vec4 FragColor;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">        FragColor = vec4(<span class="number">1.0f</span>,<span class="number">1.0f</span>,<span class="number">1.0f</span>,<span class="number">1.0f</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="主窗口"><a href="#主窗口" class="headerlink" title="主窗口"></a>主窗口</h2><p>mainwindow.ui中添加OpenGL Widget控件<br><img src="https://wingerzengimage.oss-cn-beijing.aliyuncs.com/img/20191025012851.png" alt><br>右键OpenGL Widget控件，提升为<br><img src="https://wingerzengimage.oss-cn-beijing.aliyuncs.com/img/20191025013003.png" alt><br>在提升的类名称中填入GLWidget，头文件则为glwidget.h，点击提升，该控件就继承了我们之前编写的GLWidget类</p>
-<h2 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h2><p>当当当当~一个boring的三角形<br><img src="https://wingerzengimage.oss-cn-beijing.aliyuncs.com/img/20191025013326.png" alt></p>
+<h2 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h2><p>当当当当~一个朴实无华且枯燥的三角形<br><img src="https://wingerzengimage.oss-cn-beijing.aliyuncs.com/img/20191025013326.png" alt></p>
 ]]></content>
       <categories>
         <category>OpenGL</category>
