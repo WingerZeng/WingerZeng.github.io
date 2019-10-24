@@ -55,18 +55,18 @@
   };
 </script>
 
-  <meta name="description" content="输入格式Each input file contains one test case. For each case, the first line contains 2 positive integers N (2≤N≤200), the number of cities, and K, the total number of routes between pairs of cities; fol">
+  <meta name="description" content="题意输入格式Each input file contains one test case. For each case, the first line contains 2 positive integers N (2≤N≤200), the number of cities, and K, the total number of routes between pairs of cities; f">
 <meta name="keywords" content="算法,PTA">
 <meta property="og:type" content="article">
 <meta property="og:title" content="1087 All Roads Lead to Rome">
 <meta property="og:url" content="http://wingerzeng.com/2019/10/20/1087-All-Roads-Lead-to-Rome/index.html">
 <meta property="og:site_name" content="winger训练营">
-<meta property="og:description" content="输入格式Each input file contains one test case. For each case, the first line contains 2 positive integers N (2≤N≤200), the number of cities, and K, the total number of routes between pairs of cities; fol">
+<meta property="og:description" content="题意输入格式Each input file contains one test case. For each case, the first line contains 2 positive integers N (2≤N≤200), the number of cities, and K, the total number of routes between pairs of cities; f">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-10-21T07:27:52.125Z">
+<meta property="og:updated_time" content="2019-10-24T15:56:41.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="1087 All Roads Lead to Rome">
-<meta name="twitter:description" content="输入格式Each input file contains one test case. For each case, the first line contains 2 positive integers N (2≤N≤200), the number of cities, and K, the total number of routes between pairs of cities; fol">
+<meta name="twitter:description" content="题意输入格式Each input file contains one test case. For each case, the first line contains 2 positive integers N (2≤N≤200), the number of cities, and K, the total number of routes between pairs of cities; f">
   <link rel="canonical" href="http://wingerzeng.com/2019/10/20/1087-All-Roads-Lead-to-Rome/">
 
 
@@ -280,7 +280,7 @@
                   <i class="fa fa-calendar-check-o"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2019-10-21 15:27:52" itemprop="dateModified" datetime="2019-10-21T15:27:52+08:00">2019-10-21</time>
+                <time title="Modified: 2019-10-24 23:56:41" itemprop="dateModified" datetime="2019-10-24T23:56:41+08:00">2019-10-24</time>
               </span>
             
           
@@ -313,8 +313,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="输入格式"><a href="#输入格式" class="headerlink" title="输入格式"></a>输入格式</h2><p>Each input file contains one test case. For each case, the first line contains 2 positive integers N (2≤N≤200), the number of cities, and K, the total number of routes between pairs of cities; followed by the name of the starting city. The next N−1 lines each gives the name of a city and an integer that represents the happiness one can gain from that city, except the starting city. Then K lines follow, each describes a route between two cities in the format City1 City2 Cost. Here the name of a city is a string of 3 capital English letters, and the destination is always ROM which represents Rome.</p><a id="more"></a>
-<h2 id="输出格式"><a href="#输出格式" class="headerlink" title="输出格式"></a>输出格式</h2><p>For each test case, we are supposed to find the route with the least cost. If such a route is not unique, the one with the maximum happiness will be recommanded. If such a route is still not unique, then we output the one with the maximum average happiness – it is guaranteed by the judge that such a solution exists and is unique.</p>
+        <h2 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h2><h3 id="输入格式"><a href="#输入格式" class="headerlink" title="输入格式"></a>输入格式</h3><p>Each input file contains one test case. For each case, the first line contains 2 positive integers N (2≤N≤200), the number of cities, and K, the total number of routes between pairs of cities; followed by the name of the starting city. The next N−1 lines each gives the name of a city and an integer that represents the happiness one can gain from that city, except the starting city. Then K lines follow, each describes a route between two cities in the format City1 City2 Cost. Here the name of a city is a string of 3 capital English letters, and the destination is always ROM which represents Rome.</p><a id="more"></a>
+<h3 id="输出格式"><a href="#输出格式" class="headerlink" title="输出格式"></a>输出格式</h3><p>For each test case, we are supposed to find the route with the least cost. If such a route is not unique, the one with the maximum happiness will be recommanded. If such a route is still not unique, then we output the one with the maximum average happiness – it is guaranteed by the judge that such a solution exists and is unique.</p>
 <p>Hence in the first line of output, you must print 4 numbers: the number of different routes with the least cost, the cost, the happiness, and the average happiness (take the integer part only) of the recommanded route. Then in the next line, you are supposed to print the route in the format City1-&gt;City2-&gt;…-&gt;ROM.</p>
 <h2 id="Sample-Input"><a href="#Sample-Input" class="headerlink" title="Sample Input:"></a>Sample Input:</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">6 7 HZH</span><br><span class="line">ROM 100</span><br><span class="line">PKN 40</span><br><span class="line">GDN 55</span><br><span class="line">PRS 95</span><br><span class="line">BLN 80</span><br><span class="line">ROM GDN 1</span><br><span class="line">BLN ROM 1</span><br><span class="line">HZH PKN 1</span><br><span class="line">PRS ROM 2</span><br><span class="line">BLN HZH 2</span><br><span class="line">PKN GDN 1</span><br><span class="line">HZH PRS 1</span><br></pre></td></tr></table></figure>
 <h2 id="Sample-Output"><a href="#Sample-Output" class="headerlink" title="Sample Output:"></a>Sample Output:</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">3 3 195 97</span><br><span class="line">HZH-&gt;PRS-&gt;ROM</span><br></pre></td></tr></table></figure>
@@ -361,6 +361,10 @@
 
             <div class="post-nav-prev post-nav-item">
               
+                <a href="/2019/10/25/Qt-OpenGL-搭建基本绘制框架/" rel="prev" title="Qt+OpenGL 搭建基本绘制框架">
+                  Qt+OpenGL 搭建基本绘制框架 <i class="fa fa-chevron-right"></i>
+                </a>
+              
             </div>
           </div>
         
@@ -405,7 +409,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#输入格式"><span class="nav-number">1.</span> <span class="nav-text">输入格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#输出格式"><span class="nav-number">2.</span> <span class="nav-text">输出格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sample-Input"><span class="nav-number">3.</span> <span class="nav-text">Sample Input:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sample-Output"><span class="nav-number">4.</span> <span class="nav-text">Sample Output:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#思路："><span class="nav-number">5.</span> <span class="nav-text">思路：</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#题意"><span class="nav-number">1.</span> <span class="nav-text">题意</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#输入格式"><span class="nav-number">1.1.</span> <span class="nav-text">输入格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#输出格式"><span class="nav-number">1.2.</span> <span class="nav-text">输出格式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sample-Input"><span class="nav-number">2.</span> <span class="nav-text">Sample Input:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Sample-Output"><span class="nav-number">3.</span> <span class="nav-text">Sample Output:</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#思路："><span class="nav-number">4.</span> <span class="nav-text">思路：</span></a></li></ol></div>
         
       </div>
       <!--/noindex-->
@@ -421,7 +425,7 @@
         
           <a href="/archives/">
         
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -434,7 +438,7 @@
             <a href="/categories/">
           
         
-        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">categories</span>
         </a>
       </div>
@@ -447,7 +451,7 @@
             <a href="/tags/">
           
         
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">tags</span>
         </a>
       </div>

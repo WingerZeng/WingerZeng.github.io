@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="一直觉得每次建立新的OpenGL工程，都要翻翻笔记，做一些复制粘贴的工作。于是我便产生了搭建一个比较通用的OpenGL模板的想法，最近又在学习Qt和设计模式，顺便将OpenGL与Qt相结合，并且亲手实践一些设计模式，权当练手罢。">
+<meta name="keywords" content="Qt,OpenGL,图形学">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Qt+OpenGL 搭建基本绘制框架">
+<meta property="og:url" content="http://wingerzeng.com/2019/10/25/Qt-OpenGL-搭建基本绘制框架/index.html">
+<meta property="og:site_name" content="winger训练营">
+<meta property="og:description" content="一直觉得每次建立新的OpenGL工程，都要翻翻笔记，做一些复制粘贴的工作。于是我便产生了搭建一个比较通用的OpenGL模板的想法，最近又在学习Qt和设计模式，顺便将OpenGL与Qt相结合，并且亲手实践一些设计模式，权当练手罢。">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https://wingerzengimage.oss-cn-beijing.aliyuncs.com/img/20191025003743.png">
+<meta property="og:image" content="https://wingerzengimage.oss-cn-beijing.aliyuncs.com/img/20191025012851.png">
+<meta property="og:image" content="https://wingerzengimage.oss-cn-beijing.aliyuncs.com/img/20191025013003.png">
+<meta property="og:image" content="https://wingerzengimage.oss-cn-beijing.aliyuncs.com/img/20191025013326.png">
+<meta property="og:updated_time" content="2019-10-24T16:26:17.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Qt+OpenGL 搭建基本绘制框架">
+<meta name="twitter:description" content="一直觉得每次建立新的OpenGL工程，都要翻翻笔记，做一些复制粘贴的工作。于是我便产生了搭建一个比较通用的OpenGL模板的想法，最近又在学习Qt和设计模式，顺便将OpenGL与Qt相结合，并且亲手实践一些设计模式，权当练手罢。">
+<meta name="twitter:image" content="https://wingerzengimage.oss-cn-beijing.aliyuncs.com/img/20191025003743.png">
+  <link rel="canonical" href="http://wingerzeng.com/2019/10/25/Qt-OpenGL-搭建基本绘制框架/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Qt+OpenGL 搭建基本绘制框架 | winger训练营</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">winger训练营</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+        
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+      
+    
+      
+      
+        
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+      
+    
+      
+      
+        
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+      
+    
+      
+      
+        
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      
+    
+      
+      
+        
+        
+        <li class="menu-item menu-item-photos">
+      
+    
+
+    <a href="/photos/" rel="section"><i class="fa fa-fw fa-photo"></i>photos</a>
+
+  </li>
+      
+    
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://wingerzeng.com/2019/10/25/Qt-OpenGL-搭建基本绘制框架/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Winger Zeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="winger训练营">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            Qt+OpenGL 搭建基本绘制框架
+            
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2019-10-25 00:26:17" itemprop="dateCreated datePublished" datetime="2019-10-25T00:26:17+08:00">2019-10-25</time>
+            </span>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenGL/" itemprop="url" rel="index">
+                    <span itemprop="name">OpenGL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>一直觉得每次建立新的OpenGL工程，都要翻翻笔记，做一些复制粘贴的工作。于是我便产生了搭建一个比较通用的OpenGL模板的想法，最近又在学习Qt和设计模式，顺便将OpenGL与Qt相结合，并且亲手实践一些设计模式，权当练手罢。</p><a id="more"></a>
+<h1 id="工程目录"><a href="#工程目录" class="headerlink" title="工程目录"></a>工程目录</h1><p>我首先新建立了一个Qt的工程，并且按下图建立工程目录。其中mainwindow就是应用的主窗口，glwidget.cpp文件定义了GLWidget类，openglmodel文件中定义了被绘制的模型类。我还新建了一个资源文件目录，用来存放各种着色器文件。<br><img src="https://wingerzengimage.oss-cn-beijing.aliyuncs.com/img/20191025003743.png" alt></p>
+<h1 id="GLWidget类"><a href="#GLWidget类" class="headerlink" title="GLWidget类"></a>GLWidget类</h1><p>GLWidget类是opengl的绘制对象，负责所有模型、着色器、用户交互。继承QOpenGLWidget类，并重写其中的initializeGL,paintGL,resizeGL虚函数，其分别对应初始化、绘制、窗体大小改变时会触发的回调函数。重写后的initializeGL主要负责一些opengl绘制环境初始化、着色器初始化、模型初始化的工作，而paintGL则相当于原生opengl中的绘制循环。</p>
+<h3 id="注意点："><a href="#注意点：" class="headerlink" title="注意点："></a>注意点：</h3><ul>
+<li>opengl初始化工作要在initializeGL中进行，而不是构造函数中，并且记得调用initializeOpenGLFunctions。</li>
+<li>我通过public继承了QOpenGLFunctions_4_3_Core类（可以换成其他版本）来调用opengl的函数，有些教程，包括官方文档上使用的是producted继承，但由于我要从模型类调用GLWidget类的opengl函数，所以改成了public继承，可能会导致一些封装性上的问题。</li>
+</ul>
+<figure class="highlight cpp"><figcaption><span>glwidget.h</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> GLWIDGET_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> GLWIDGET_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QOpenGLWidget&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QOpenGLFunctions_4_3_Core&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QOpenGLShaderProgram&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QWidget&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;memory&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GLModel</span>;</span></span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">shared_ptr</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GLWidget</span> :</span> <span class="keyword">public</span> QOpenGLWidget, <span class="keyword">public</span> QOpenGLFunctions_4_3_Core</span><br><span class="line">&#123;</span><br><span class="line">    Q_OBJECT</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="keyword">explicit</span> <span class="title">GLWidget</span><span class="params">(QWidget *parent = <span class="literal">nullptr</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">signals:</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">initializeGL</span><span class="params">()</span> override</span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">paintGL</span><span class="params">()</span> override</span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">resizeGL</span><span class="params">(<span class="keyword">int</span> w,<span class="keyword">int</span> h)</span> override</span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    QWidget* father;</span><br><span class="line">    <span class="comment">//智能指针是个好习惯！</span></span><br><span class="line">    <span class="built_in">shared_ptr</span>&lt;QOpenGLShaderProgram&gt; pShader;</span><br><span class="line">    <span class="built_in">shared_ptr</span>&lt;GLModel&gt; model;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">// GLWIDGET_H</span></span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><figcaption><span>glwidget.cpp </span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"glwidget.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QDebug&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"openglmodel.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="keyword">namespace</span> GLWidgetTools &#123;</span><br><span class="line"><span class="comment">//加载shader文件</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">initShader</span><span class="params">(QOpenGLShaderProgram *shader, QString vs, QString fs, QString gs=<span class="string">""</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(!shader-&gt;addShaderFromSourceFile(QOpenGLShader::Vertex, vs))&#123;</span><br><span class="line">        qDebug()&lt;&lt;shader-&gt;<span class="built_in">log</span>();</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(gs!=<span class="string">""</span>&amp;&amp;!shader-&gt;addShaderFromSourceFile(QOpenGLShader::Geometry, gs))&#123;</span><br><span class="line">        qDebug()&lt;&lt;shader-&gt;<span class="built_in">log</span>();</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(!shader-&gt;addShaderFromSourceFile(QOpenGLShader::Fragment, fs))&#123;</span><br><span class="line">        qDebug()&lt;&lt;shader-&gt;<span class="built_in">log</span>();</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(!shader-&gt;link())&#123;</span><br><span class="line">        qDebug()&lt;&lt;shader-&gt;<span class="built_in">log</span>();</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(!shader-&gt;bind())&#123;</span><br><span class="line">        qDebug()&lt;&lt;shader-&gt;<span class="built_in">log</span>();</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    shader-&gt;release();</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">GLWidget::GLWidget(QWidget *parent) : QOpenGLWidget(parent)</span><br><span class="line">&#123;</span><br><span class="line">    father = parent;</span><br><span class="line">    init();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> GLWidget::initializeGL()</span><br><span class="line">&#123;</span><br><span class="line">    initializeOpenGLFunctions();</span><br><span class="line">    <span class="keyword">if</span>(father) setGeometry(<span class="number">0</span>,<span class="number">0</span>,father-&gt;width(),father-&gt;height());</span><br><span class="line">    qDebug()&lt;&lt; (<span class="keyword">const</span> <span class="keyword">char</span>*)glGetString(GL_VERSION)&lt;&lt;<span class="built_in">endl</span>; <span class="comment">//获取显卡opengl版本信息</span></span><br><span class="line">    <span class="comment">//glEnable(GL_DEPTH_TEST);</span></span><br><span class="line">    glClearColor(<span class="number">82.0</span>/<span class="number">255</span>, <span class="number">87.0</span>/<span class="number">255</span>, <span class="number">110.0</span>/<span class="number">255</span>,<span class="number">0.0</span>); <span class="comment">//设置背景色</span></span><br><span class="line">    glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">    pShader.reset(<span class="keyword">new</span> QOpenGLShaderProgram);</span><br><span class="line">    <span class="comment">//shader文件用资源文件储存</span></span><br><span class="line">    GLWidgetTools::initShader(pShader.get(),<span class="string">":/shader/shader.vs"</span>,<span class="string">":/shader/shader.fs"</span>);</span><br><span class="line">    <span class="comment">//模型初始化，一个三角形</span></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;Vertex&gt; v(<span class="number">3</span>);</span><br><span class="line">    v[<span class="number">0</span>].Position=QVector3D(<span class="number">-1</span>,<span class="number">-1</span>,<span class="number">0</span>);</span><br><span class="line">    v[<span class="number">1</span>].Position=QVector3D(<span class="number">1</span>,<span class="number">-1</span>,<span class="number">0</span>);</span><br><span class="line">    v[<span class="number">2</span>].Position=QVector3D(<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>);</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">unsigned</span> <span class="keyword">int</span>&gt; i&#123;<span class="number">0</span>,<span class="number">1</span>,<span class="number">2</span>&#125;;</span><br><span class="line">    model.reset(<span class="keyword">new</span> GLModel(<span class="keyword">this</span>,v,i));</span><br><span class="line">    model-&gt;setupModel();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> GLWidget::paintGL()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//初始化工作</span></span><br><span class="line">    glClearColor(<span class="number">82.0</span>/<span class="number">255</span>, <span class="number">87.0</span>/<span class="number">255</span>, <span class="number">110.0</span>/<span class="number">255</span>,<span class="number">0.00f</span>);</span><br><span class="line">    glClear(GL_DEPTH_BUFFER_BIT|GL_COLOR_BUFFER_BIT);</span><br><span class="line"></span><br><span class="line">    model-&gt;Draw(pShader.get());</span><br><span class="line">    qDebug()&lt;&lt;glGetError();</span><br><span class="line">    update();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> GLWidget::resizeGL(<span class="keyword">int</span> w, <span class="keyword">int</span> h)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//改变窗体大小</span></span><br><span class="line">    setGeometry(<span class="number">0</span>,<span class="number">0</span>,w,h);</span><br><span class="line">    <span class="comment">//改变视口</span></span><br><span class="line">    glViewport(<span class="number">0</span>,<span class="number">0</span>,w,h);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> GLWidget::init()</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="openglmodel类"><a href="#openglmodel类" class="headerlink" title="openglmodel类"></a>openglmodel类</h1><p>我主要想实现一个重用性较强的模型基类，说是模型类，其实其功能可以包含光照、摄像机矩阵等与着色器之间的交互。<br>实践了一下设计方法中的Template Method，将Draw函数视为一个绘制的模板，在其中处理一些绘制前后的通用步骤，而核心的绘制过程则作为虚函数交给派生类重写。</p>
+<h3 id="注意点：-1"><a href="#注意点：-1" class="headerlink" title="注意点："></a>注意点：</h3><ul>
+<li>在头文件中使用类声明，而不是文件包含，可以减小文件之间的编译耦合</li>
+<li>对于一些数据量较大的模型，顶点位置数据应该交给一个模型类来存储，而其他模型类则共享该VBO</li>
+</ul>
+<figure class="highlight cpp"><figcaption><span>openglmodel.h</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> OPENGLMODEL_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> OPENGLMODEL_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QOpenGLShaderProgram&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QVector&gt;</span></span></span><br><span class="line"><span class="comment">//在头文件中声明GLWidget类，在源文件中引入glwidget.h，减少编译耦合</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GLWidget</span>;</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Camera</span>;</span></span><br><span class="line"><span class="comment">//纹理类</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Texture</span>&#123;</span></span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> id;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">string</span> type;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="comment">//顶点类</span></span><br><span class="line"><span class="comment">//结构体中内存连续存储,因此可以安心使用</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Vertex</span>&#123;</span></span><br><span class="line">    QVector3D Position;</span><br><span class="line">    QVector3D Normal=QVector3D();</span><br><span class="line">    QVector2D TexCoords=QVector2D();</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">vector</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GLModel</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    GLModel(GLWidget* f);</span><br><span class="line">    GLModel(GLWidget* f,<span class="built_in">vector</span>&lt;Vertex&gt; v,<span class="built_in">vector</span>&lt;<span class="keyword">unsigned</span> <span class="keyword">int</span>&gt; i=<span class="built_in">vector</span>&lt;<span class="keyword">unsigned</span> <span class="keyword">int</span>&gt;(),<span class="built_in">vector</span>&lt;Texture&gt; t=<span class="built_in">vector</span>&lt;Texture&gt;());</span><br><span class="line">    <span class="comment">//当有多个对象使用同一个顶点数据时，由一个对象创建VBO，其他对象共享该VBO;</span></span><br><span class="line">    GLModel(GLWidget* f,<span class="keyword">unsigned</span> <span class="keyword">int</span> vbo,<span class="built_in">vector</span>&lt;<span class="keyword">unsigned</span> <span class="keyword">int</span>&gt; i=<span class="built_in">vector</span>&lt;<span class="keyword">unsigned</span> <span class="keyword">int</span>&gt;(),<span class="built_in">vector</span>&lt;Texture&gt; t=<span class="built_in">vector</span>&lt;Texture&gt;());</span><br><span class="line">    <span class="comment">//基类在绘制流程前后添加了一些通用步骤，子类重写绘制核心过程</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setCamera</span><span class="params">(Camera* c)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">Draw</span><span class="params">(QOpenGLShaderProgram* shader)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">setupModel</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    <span class="comment">//子类可以重写绘制的核心步骤</span></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">mainDraw</span><span class="params">(QOpenGLShaderProgram* shader)</span></span>;</span><br><span class="line">    GLWidget* father;</span><br><span class="line">    <span class="built_in">vector</span>&lt;Vertex&gt; vertices;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">unsigned</span> <span class="keyword">int</span>&gt; indices;</span><br><span class="line">    <span class="comment">//如果要使用纹理的话，在着色器uniform中要给纹理一个统一的编号规则</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;Texture&gt; textures;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> VAO,VBO=<span class="number">0</span>,EBO;</span><br><span class="line">    <span class="comment">//目前来说空余的Camera对象</span></span><br><span class="line">    Camera* myCamera;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">// OPENGLMODEL_H</span></span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><figcaption><span>openglmodel.cpp</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"openglmodel.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"glwidget.h"</span></span></span><br><span class="line"></span><br><span class="line">GLModel::GLModel(GLWidget *f):father(f)&#123;&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">GLModel::GLModel(GLWidget* f,<span class="built_in">vector</span>&lt;Vertex&gt; v, <span class="built_in">vector</span>&lt;<span class="keyword">unsigned</span> <span class="keyword">int</span>&gt; i, <span class="built_in">vector</span>&lt;Texture&gt; t)</span><br><span class="line">    :father(f),vertices(v),indices(i),textures(t)&#123;&#125;</span><br><span class="line"></span><br><span class="line">GLModel::GLModel(GLWidget *f, <span class="keyword">unsigned</span> <span class="keyword">int</span> vbo, <span class="built_in">vector</span>&lt;<span class="keyword">unsigned</span> <span class="keyword">int</span>&gt; i, <span class="built_in">vector</span>&lt;Texture&gt; t)</span><br><span class="line">    :VBO(vbo),indices(i),textures(t)&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> GLModel::setCamera(Camera *c)</span><br><span class="line">&#123;</span><br><span class="line">    myCamera=c;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> GLModel::setupModel()</span><br><span class="line">&#123;</span><br><span class="line">    father-&gt;glGenVertexArrays(<span class="number">1</span>, &amp;VAO);</span><br><span class="line">    father-&gt;glBindVertexArray(VAO);</span><br><span class="line">    <span class="comment">//如果没有从其他对象共享VBO，则创建VBO</span></span><br><span class="line">    <span class="keyword">if</span>(VBO) father-&gt;glBindBuffer(GL_ARRAY_BUFFER,VBO);</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        father-&gt;glGenBuffers(<span class="number">1</span>, &amp;VBO);</span><br><span class="line">        father-&gt;glBindBuffer(GL_ARRAY_BUFFER, VBO);</span><br><span class="line">        father-&gt;glBufferData(GL_ARRAY_BUFFER, vertices.size() * <span class="keyword">sizeof</span>(Vertex), &amp;vertices[<span class="number">0</span>], GL_STATIC_DRAW);</span><br><span class="line">        father-&gt;glEnableVertexAttribArray(<span class="number">0</span>);</span><br><span class="line">        father-&gt;glVertexAttribPointer(<span class="number">0</span>, <span class="number">3</span>, GL_FLOAT, GL_FALSE, <span class="keyword">sizeof</span>(Vertex), (<span class="keyword">void</span>*)<span class="number">0</span>);</span><br><span class="line">        <span class="comment">// 顶点法线</span></span><br><span class="line">        father-&gt;glEnableVertexAttribArray(<span class="number">1</span>);</span><br><span class="line">        <span class="comment">//offsetof可以方便地设置结构体的偏移量</span></span><br><span class="line">        father-&gt;glVertexAttribPointer(<span class="number">1</span>, <span class="number">3</span>, GL_FLOAT, GL_FALSE, <span class="keyword">sizeof</span>(Vertex), (<span class="keyword">void</span>*)offsetof(Vertex, Normal));</span><br><span class="line">        <span class="comment">// 顶点纹理坐标</span></span><br><span class="line">        father-&gt;glEnableVertexAttribArray(<span class="number">2</span>);</span><br><span class="line">        father-&gt;glVertexAttribPointer(<span class="number">2</span>, <span class="number">2</span>, GL_FLOAT, GL_FALSE, <span class="keyword">sizeof</span>(Vertex), (<span class="keyword">void</span>*)offsetof(Vertex, TexCoords));</span><br><span class="line">    &#125;</span><br><span class="line">    father-&gt;glGenBuffers(<span class="number">1</span>, &amp;EBO);</span><br><span class="line"></span><br><span class="line">    father-&gt;glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);</span><br><span class="line">    father-&gt;glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * <span class="keyword">sizeof</span>(<span class="keyword">unsigned</span> <span class="keyword">int</span>),</span><br><span class="line">                 &amp;indices[<span class="number">0</span>], GL_STATIC_DRAW);</span><br><span class="line"></span><br><span class="line">    father-&gt;glBindVertexArray(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> GLModel::mainDraw(QOpenGLShaderProgram *shader)</span><br><span class="line">&#123;</span><br><span class="line">    father-&gt;glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, <span class="number">0</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> GLModel::Draw(QOpenGLShaderProgram* shader)&#123;</span><br><span class="line">    shader-&gt;bind();</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> diffuseNr = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">unsigned</span> <span class="keyword">int</span> specularNr = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">using</span> <span class="built_in">std</span>::<span class="built_in">string</span>;</span><br><span class="line">    <span class="comment">//如果没有纹理，跳过这一部分</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">unsigned</span> <span class="keyword">int</span> i = <span class="number">0</span>; i &lt; textures.size(); i++)</span><br><span class="line">    &#123;</span><br><span class="line">        father-&gt;glActiveTexture(GL_TEXTURE0 + i); <span class="comment">// 在绑定之前激活相应的纹理单元</span></span><br><span class="line">        <span class="comment">// 获取纹理序号（diffuse_textureN 中的 N）</span></span><br><span class="line">        <span class="built_in">string</span> number;</span><br><span class="line">        <span class="built_in">string</span> name = textures[i].type;</span><br><span class="line">        <span class="keyword">if</span>(name == <span class="string">"texture_diffuse"</span>)</span><br><span class="line">            number = <span class="built_in">std</span>::to_string(diffuseNr++);</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(name == <span class="string">"texture_specular"</span>)</span><br><span class="line">            number = <span class="built_in">std</span>::to_string(specularNr++);</span><br><span class="line"></span><br><span class="line">        shader-&gt;setUniformValue((<span class="string">"material."</span> + name + number).c_str(), i);</span><br><span class="line">        father-&gt;glBindTexture(GL_TEXTURE_2D, textures[i].id);</span><br><span class="line">    &#125;</span><br><span class="line">    father-&gt;glActiveTexture(GL_TEXTURE0);</span><br><span class="line">    <span class="comment">// 绘制模型</span></span><br><span class="line">    father-&gt;glBindVertexArray(VAO);</span><br><span class="line">    mainDraw(shader);</span><br><span class="line">    father-&gt;glBindVertexArray(<span class="number">0</span>);</span><br><span class="line">    shader-&gt;release();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="着色器"><a href="#着色器" class="headerlink" title="着色器"></a>着色器</h1><p>最基础的shader，没啥好讲的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#version 430 core</span><br><span class="line">layout (location = 0) in vec3 aPos;</span><br><span class="line">void main()</span><br><span class="line">&#123;</span><br><span class="line">        gl_Position = vec4(aPos,1.0f);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#version 430 core</span><br><span class="line">out vec4 FragColor;</span><br><span class="line">void main()</span><br><span class="line">&#123;</span><br><span class="line">        FragColor = vec4(1.0f,1.0f,1.0f,1.0f);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="主窗口"><a href="#主窗口" class="headerlink" title="主窗口"></a>主窗口</h1><p>mainwindow.ui中添加OpenGL Widget控件<br><img src="https://wingerzengimage.oss-cn-beijing.aliyuncs.com/img/20191025012851.png" alt><br>右键OpenGL Widget控件，提升为<br><img src="https://wingerzengimage.oss-cn-beijing.aliyuncs.com/img/20191025013003.png" alt><br>在提升的类名称中填入GLWidget，头文件则为glwidget.h，点击提升，该控件就继承了我们之前编写的GLWidget类</p>
+<h1 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h1><p>当当当当~一个boring的三角形<br><img src="https://wingerzengimage.oss-cn-beijing.aliyuncs.com/img/20191025013326.png" alt></p>
+
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/Qt/" rel="tag"># Qt</a>
+            
+              <a href="/tags/OpenGL/" rel="tag"># OpenGL</a>
+            
+              <a href="/tags/图形学/" rel="tag"># 图形学</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/10/20/1087-All-Roads-Lead-to-Rome/" rel="next" title="1087 All Roads Lead to Rome">
+                  <i class="fa fa-chevron-left"></i> 1087 All Roads Lead to Rome
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#工程目录"><span class="nav-number">1.</span> <span class="nav-text">工程目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#GLWidget类"><span class="nav-number">2.</span> <span class="nav-text">GLWidget类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#注意点："><span class="nav-number">2.0.1.</span> <span class="nav-text">注意点：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#openglmodel类"><span class="nav-number">3.</span> <span class="nav-text">openglmodel类</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#注意点：-1"><span class="nav-number">3.0.1.</span> <span class="nav-text">注意点：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#着色器"><span class="nav-number">4.</span> <span class="nav-text">着色器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#主窗口"><span class="nav-number">5.</span> <span class="nav-text">主窗口</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#运行"><span class="nav-number">6.</span> <span class="nav-text">运行</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Winger Zeng</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">6</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">categories</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">tags</span>
+        </a>
+      </div>
+    
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Winger Zeng</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">
+      
+    Theme – <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.4.1
+  </div>
+
+<div class="busuanzi_count">
+	<span id="busuanzi_container_site_uv">
+		本站惨遭踢馆<span id="busuanzi_value_site_uv"></span>人次
+	</span>
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
