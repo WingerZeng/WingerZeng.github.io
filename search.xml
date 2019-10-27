@@ -32,7 +32,7 @@
 
 <p>源文件中实现该工厂函数，在该版本的GLWidget中，工厂建立一个CADCamera对象，并以注意：工厂函数不能在GLWidget构造函数中调用，因为GLWiget的派生类在构造GLWiget类时，派生类本身没有构造完毕，因此调用的永远是GLWiget版本的cameraFactory()。</p>
 <blockquote>
-<p>绝不在构造和析构函数中调用virtual函数——“effective c++, item 9”</p>
+<p>绝不在构造和析构函数中调用virtual函数—《effective c++》</p>
 </blockquote>
 <figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">AbstractCamera *GLWidget::cameraFactory()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> CADCamera(<span class="keyword">this</span>,QVector3D(<span class="number">0.0</span>,<span class="number">0.0</span>,<span class="number">3.0</span>));</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//在初始化函数中调用工厂函数</span></span><br><span class="line">GLWidget::GLWidget(QWidget *parent) : QOpenGLWidget(parent)</span><br><span class="line">&#123;</span><br><span class="line">    father = parent;</span><br><span class="line">    pCamera.reset(cameraFactory());</span><br><span class="line">    init();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
