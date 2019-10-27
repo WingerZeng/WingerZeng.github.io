@@ -55,7 +55,7 @@
       </tags>
   </entry>
   <entry>
-    <title>Qt+OpenGL 基本绘制框架搭建</title>
+    <title>Qt+OpenGL 1.基本绘制框架搭建</title>
     <url>/2019/10/25/Qt-OpenGL-%E6%90%AD%E5%BB%BA%E5%9F%BA%E6%9C%AC%E7%BB%98%E5%88%B6%E6%A1%86%E6%9E%B6/</url>
     <content><![CDATA[<p>每次建立新的OpenGL工程，都要翻翻笔记，做一些复制粘贴的工作，非常朴实无华且枯燥。于是我便产生了搭建一个比较通用的OpenGL模板的想法。最近又在学习Qt和设计模式，顺便将OpenGL与Qt相结合，并亲手实践一些设计模式，权当练手罢。</p><a id="more"></a>
 <h2 id="工程目录"><a href="#工程目录" class="headerlink" title="工程目录"></a>工程目录</h2><p>我首先新建立了一个Qt的工程，并且按下图建立工程目录。其中mainwindow就是应用的主窗口，glwidget.cpp文件定义了GLWidget类，openglmodel文件中定义了被绘制的模型类。我还新建了一个资源文件目录，用来存放各种着色器文件。<br><img src="https://wingerzengimage.oss-cn-beijing.aliyuncs.com/img/20191025003743.png" alt></p>
