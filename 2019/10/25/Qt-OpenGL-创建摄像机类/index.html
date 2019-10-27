@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+
+
+
+
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 3.9.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.4.1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.4.1">
+  <link rel="mask-icon" href="/images/logo.svg?v=7.4.1" color="#222">
+
+<link rel="stylesheet" href="/css/main.css?v=7.4.1">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0">
+
+
+<script id="hexo-configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '7.4.1',
+    exturl: false,
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    bookmark: {"enable":false,"color":"#222","save":"auto"},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    algolia: {
+      appID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    localsearch: {"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},
+    path: 'search.xml',
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    translation: {
+      copy_button: 'Copy',
+      copy_success: 'Copied',
+      copy_failure: 'Copy failed'
+    },
+    sidebarPadding: 40
+  };
+</script>
+
+  <meta name="description" content="上一篇文章中，我在Qt中搭建了一个Opengl绘制框架，并绘制了一个三角形，为了让朴实无华且枯燥的三角形动起来，我决定创建一个摄像机。摄像机类我创建了一个openglcamera.h文件，以及对应的cpp文件，用于安放摄像机类体系。什么，类体系?没错，我先创建了一个摄像机的抽象基类，称为AbstractCamera，并由此派生出其余的具体摄像机类。学c++，还是要多锻炼自己面向对象的思想。">
+<meta name="keywords" content="Qt,OpenGL,图形学,设计模式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Qt+OpenGL 2.创建摄像机类">
+<meta property="og:url" content="http://wingerzeng.com/2019/10/25/Qt-OpenGL-创建摄像机类/index.html">
+<meta property="og:site_name" content="winger训练营">
+<meta property="og:description" content="上一篇文章中，我在Qt中搭建了一个Opengl绘制框架，并绘制了一个三角形，为了让朴实无华且枯燥的三角形动起来，我决定创建一个摄像机。摄像机类我创建了一个openglcamera.h文件，以及对应的cpp文件，用于安放摄像机类体系。什么，类体系?没错，我先创建了一个摄像机的抽象基类，称为AbstractCamera，并由此派生出其余的具体摄像机类。学c++，还是要多锻炼自己面向对象的思想。">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-10-25T14:59:08.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Qt+OpenGL 2.创建摄像机类">
+<meta name="twitter:description" content="上一篇文章中，我在Qt中搭建了一个Opengl绘制框架，并绘制了一个三角形，为了让朴实无华且枯燥的三角形动起来，我决定创建一个摄像机。摄像机类我创建了一个openglcamera.h文件，以及对应的cpp文件，用于安放摄像机类体系。什么，类体系?没错，我先创建了一个摄像机的抽象基类，称为AbstractCamera，并由此派生出其余的具体摄像机类。学c++，还是要多锻炼自己面向对象的思想。">
+  <link rel="canonical" href="http://wingerzeng.com/2019/10/25/Qt-OpenGL-创建摄像机类/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome: false,
+    isPost: true,
+    isPage: false,
+    isArchive: false
+  };
+</script>
+
+  <title>Qt+OpenGL 2.创建摄像机类 | winger训练营</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">winger训练营</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+      
+      
+        
+        
+        <li class="menu-item menu-item-home">
+      
+    
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>Home</a>
+
+  </li>
+      
+    
+      
+      
+        
+        
+        <li class="menu-item menu-item-tags">
+      
+    
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>Tags</a>
+
+  </li>
+      
+    
+      
+      
+        
+        
+        <li class="menu-item menu-item-categories">
+      
+    
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>Categories</a>
+
+  </li>
+      
+    
+      
+      
+        
+        
+        <li class="menu-item menu-item-archives">
+      
+    
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>Archives</a>
+
+  </li>
+      
+    
+      
+      
+        
+        
+        <li class="menu-item menu-item-photos">
+      
+    
+
+    <a href="/photos/" rel="section"><i class="fa fa-fw fa-photo"></i>photos</a>
+
+  </li>
+      
+    
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+            
+
+          <div id="content" class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="en">
+    <link itemprop="mainEntityOfPage" href="http://wingerzeng.com/2019/10/25/Qt-OpenGL-创建摄像机类/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Winger Zeng">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="winger训练营">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          
+            Qt+OpenGL 2.创建摄像机类
+            
+
+          
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              
+                
+              
+
+              <time title="Created: 2019-10-25 22:59:08" itemprop="dateCreated datePublished" datetime="2019-10-25T22:59:08+08:00">2019-10-25</time>
+            </span>
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/OpenGL/" itemprop="url" rel="index">
+                    <span itemprop="name">OpenGL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>上一篇文章中，我在Qt中搭建了一个Opengl绘制框架，并绘制了一个三角形，为了让朴实无华且枯燥的三角形动起来，我决定创建一个摄像机。</p><h2 id="摄像机类"><a href="#摄像机类" class="headerlink" title="摄像机类"></a>摄像机类</h2><p>我创建了一个openglcamera.h文件，以及对应的cpp文件，用于安放摄像机类体系。什么，类体系?没错，我先创建了一个摄像机的抽象基类，称为AbstractCamera，并由此派生出其余的具体摄像机类。学c++，还是要多锻炼自己面向对象的思想。</p><a id="more"></a>
+
+<p>首先要为摄像机类定义抽象接口，摄像机类公有的功能，一是要获取矩阵，二是要处理外界事件，比如按键、鼠标移动等。因此我在抽象类中声明了以下几个纯虚函数：</p>
+<ul>
+<li>virtual QMatrix4x4 getViewMatrix() 获取视图矩阵</li>
+<li>virtual QMatrix4x4 getProjectMatrix() 获取投影矩阵</li>
+<li>virtual void processEvent(Camera::Event e) 处理事件</li>
+<li>virtual void processEvent(Camera::Event e,float xoffset) 重载函数，处理滚轮等事件</li>
+<li>virtual void processEvent(Camera::Event e,float xoffset,float yoffset) 重载函数，处理鼠标移动等事件 </li>
+</ul>
+<p>其中对于processEvent()函数我重载了多个版本，因为对于不同的事件可能有不同的参数传递，比如鼠标移动事件就需要相对移动坐标参数。本来我想用可变长参数列表实现，但考虑到会使接口不是特别清晰，于<br>是采用了重载的方法。</p>
+<p>为了将三角形动起来，我通过上面定义的抽象摄像机，派生出一个CAD风格的摄像机类，命名为CADCamera。该类中有一些独有的成员变量，zoomSensitivity、rotateSensitivity等，用来控制摄像机的各项属性；最核心的旋转和缩放算法在processEvent()函数中，作者并不打算展开描述这些细节╮(╯3╰)╭；最后获取投影矩阵和视图矩阵则分别用到了Qt矩阵库中的QMatrix4x4::ortho()、QMatrix4x4::lookAt()函数（投影矩阵采用正投影）。</p>
+<p>以下是代码：</p>
+<figure class="highlight cpp"><figcaption><span>openglcamera.h</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> OPENGLCAMERA_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> OPENGLCAMERA_H</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QMatrix4x4&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QVector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QString&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;initializer_list&gt;</span></span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GLWidget</span>;</span></span><br><span class="line"><span class="keyword">namespace</span> Camera&#123;</span><br><span class="line">    <span class="comment">//各种外界事件</span></span><br><span class="line">    <span class="keyword">enum</span> Event&#123;Up,Down,Left,Right,Mouse_Move,Mouse_Scroll&#125;;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//一个抽象的摄像机类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AbstractCamera</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    AbstractCamera()=<span class="keyword">default</span>;</span><br><span class="line">    AbstractCamera(GLWidget* father,QVector3D pos,QVector3D front,QVector3D up);</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> QMatrix4x4 <span class="title">getViewMatrix</span><span class="params">()</span></span>=<span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> QMatrix4x4 <span class="title">getProjectMatrix</span><span class="params">()</span></span>=<span class="number">0</span>;</span><br><span class="line">    <span class="comment">//处理所有响应类事件</span></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">processEvent</span><span class="params">(Camera::Event e)</span></span>=<span class="number">0</span>;</span><br><span class="line">    <span class="comment">//滚轮、鼠标移动之类的事件，需要位移参数</span></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">processEvent</span><span class="params">(Camera::Event e,<span class="keyword">float</span> xoffset)</span></span>=<span class="number">0</span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">processEvent</span><span class="params">(Camera::Event e,<span class="keyword">float</span> xoffset,<span class="keyword">float</span> yoffset)</span></span>=<span class="number">0</span>;</span><br><span class="line">    <span class="comment">//基类的析构函数也要设成虚函数</span></span><br><span class="line">    <span class="keyword">virtual</span> ~AbstractCamera();</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">    GLWidget* father;</span><br><span class="line">    QVector3D Position;</span><br><span class="line">    QVector3D Front;</span><br><span class="line">    QVector3D Up;</span><br><span class="line">    QVector3D Right;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CADCamera</span>:</span> <span class="keyword">public</span> AbstractCamera</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    CADCamera(GLWidget* father,QVector3D pos);</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> QMatrix4x4 <span class="title">getViewMatrix</span><span class="params">()</span> override</span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> QMatrix4x4 <span class="title">getProjectMatrix</span><span class="params">()</span> override</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">processEvent</span><span class="params">(Camera::Event e)</span> override</span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">processEvent</span><span class="params">(Camera::Event e,<span class="keyword">float</span> xoffset)</span> override</span>;</span><br><span class="line">    <span class="function"><span class="keyword">virtual</span> <span class="keyword">void</span> <span class="title">processEvent</span><span class="params">(Camera::Event e,<span class="keyword">float</span> xoffset,<span class="keyword">float</span> yoffset)</span> override</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">ProcessMouseScroll</span><span class="params">(<span class="keyword">float</span> yoffset)</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">ProcessMouseMovement</span><span class="params">(<span class="keyword">float</span> xoffset, <span class="keyword">float</span> yoffset)</span></span>;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">float</span> zoomSensitivity;</span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">float</span> rotateSensitivity;</span><br><span class="line">    <span class="comment">//正交投影矩阵的基础宽度</span></span><br><span class="line">    <span class="keyword">const</span> <span class="keyword">float</span> orthoWidth;</span><br><span class="line">    <span class="comment">//缩放比</span></span><br><span class="line">    <span class="keyword">float</span> Zoom;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">// OPENGLCAMERA_H</span></span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><figcaption><span>openglcamera.cpp</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"openglcamera.h"</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QTransform&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;QMatrix4x4&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"glwidget.h"</span></span></span><br><span class="line">AbstractCamera::AbstractCamera(GLWidget* father,QVector3D pos, QVector3D front, QVector3D up):</span><br><span class="line">    father(father),Position(pos),Front(front),Up(up)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//前方向向量和上方向向量叉乘决定右方向向量</span></span><br><span class="line">    Right = QVector3D::crossProduct(front,up);</span><br><span class="line">    Right.normalize();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">AbstractCamera::~AbstractCamera()</span><br><span class="line">&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">CADCamera::CADCamera(GLWidget* father,QVector3D pos):</span><br><span class="line">    AbstractCamera (father,pos,QVector3D(<span class="number">0.0f</span>, <span class="number">0.0f</span>, <span class="number">-1.0f</span>),QVector3D(<span class="number">0.0</span>,<span class="number">1.0</span>,<span class="number">0.0f</span>)),</span><br><span class="line">    zoomSensitivity(<span class="number">0.001</span>),rotateSensitivity(<span class="number">0.3</span>),orthoWidth(<span class="number">2.0f</span>)</span><br><span class="line">&#123;</span><br><span class="line">    Zoom = <span class="number">1.0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">QMatrix4x4 CADCamera::getViewMatrix()</span><br><span class="line">&#123;</span><br><span class="line">    QMatrix4x4 viewMat;</span><br><span class="line">    viewMat.lookAt(Position,Position+Front,Up);</span><br><span class="line">    <span class="keyword">return</span> viewMat;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">QMatrix4x4 CADCamera::getProjectMatrix()</span><br><span class="line">&#123;</span><br><span class="line">    QMatrix4x4 projectMat;</span><br><span class="line">    <span class="keyword">float</span> halfWid = orthoWidth*Zoom/<span class="number">2</span>;</span><br><span class="line">    <span class="comment">//opengl界面的高宽比</span></span><br><span class="line">    <span class="keyword">float</span> hw = father-&gt;height()*<span class="number">1.0</span>/father-&gt;width();</span><br><span class="line">    <span class="comment">//远平面和近平面的坐标看情况可以适当调大</span></span><br><span class="line">    projectMat.ortho(-halfWid,halfWid,-halfWid*hw,halfWid*hw,<span class="number">100.0f</span>,<span class="number">-100.0f</span>);</span><br><span class="line">    <span class="keyword">return</span> projectMat;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> CADCamera::processEvent(Camera::Event e)</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> CADCamera::processEvent(Camera::Event e, <span class="keyword">float</span> xoffset)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">using</span> <span class="keyword">namespace</span> Camera;</span><br><span class="line">    <span class="keyword">switch</span> (e) &#123;</span><br><span class="line">    <span class="keyword">case</span> Mouse_Scroll: ProcessMouseScroll(xoffset);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> CADCamera::processEvent(Camera::Event e, <span class="keyword">float</span> xoffset, <span class="keyword">float</span> yoffset)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">using</span> <span class="keyword">namespace</span> Camera;</span><br><span class="line">    <span class="keyword">switch</span> (e) &#123;</span><br><span class="line">    <span class="keyword">case</span> Mouse_Move: ProcessMouseMovement(xoffset,yoffset);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> CADCamera::ProcessMouseScroll(<span class="keyword">float</span> yoffset)</span><br><span class="line">&#123;</span><br><span class="line">    Zoom -= yoffset*zoomSensitivity;</span><br><span class="line">    <span class="keyword">if</span>(Zoom&lt;=<span class="number">0.01</span>)</span><br><span class="line">        Zoom = <span class="number">0.01</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> CADCamera::ProcessMouseMovement(<span class="keyword">float</span> xoffset, <span class="keyword">float</span> yoffset)</span><br><span class="line">&#123;</span><br><span class="line">    xoffset *= rotateSensitivity;</span><br><span class="line">    yoffset *= rotateSensitivity;</span><br><span class="line"></span><br><span class="line">    QMatrix4x4 rotateX;</span><br><span class="line">    rotateX.rotate(xoffset,Up);</span><br><span class="line">    QMatrix4x4 rotateY;</span><br><span class="line">    rotateY.rotate(yoffset,Right);</span><br><span class="line">    Up = QVector3D(rotateY*QVector4D(Up,<span class="number">1.0</span>));</span><br><span class="line">    Position = QVector3D(rotateX*rotateY*QVector4D(Position,<span class="number">1.0</span>));</span><br><span class="line">    Front = -Position;</span><br><span class="line">    Front.normalize();</span><br><span class="line">    Right = QVector3D::crossProduct(Front,Up);</span><br><span class="line">    Right.normalize();</span><br><span class="line">    <span class="comment">//上述计算后Up会有微小误差，会形成累积误差，要修正Up，使三个方向向量保持90度关系</span></span><br><span class="line">    Up = -QVector3D::crossProduct(Front,Right);</span><br><span class="line">    Up.normalize();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="新的着色器"><a href="#新的着色器" class="headerlink" title="新的着色器"></a>新的着色器</h2><p>由于加入了模型、视图、投影矩阵，所以需要新的顶点着色器。为每个矩阵设一个uniform变量，并乘到原始坐标上。</p>
+<figure class="highlight cpp"><figcaption><span>CADshader.vs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#version 430 core</span></span><br><span class="line">layout (location = <span class="number">0</span>) in vec3 aPos;</span><br><span class="line">uniform mat4 model;</span><br><span class="line">uniform mat4 view;</span><br><span class="line">uniform mat4 project;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    gl_Position = project*view*model*vec4(aPos.x, aPos.y, aPos.z, <span class="number">1.0f</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>另外，为了给这个三角形一点颜色看看（give this triangel a little color see see），我在片段着色器中加入了代表颜色的uniform变量。</p>
+<figure class="highlight cpp"><figcaption><span>CADshader.fs</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#version 430 core</span></span><br><span class="line">out vec4 FragColor;</span><br><span class="line">uniform vec4 myColor;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    FragColor = myColor;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="修改GLWidget类"><a href="#修改GLWidget类" class="headerlink" title="修改GLWidget类"></a>修改GLWidget类</h2><p>为了适应新加入的摄像机类，GLWidget类中需要做一些修改。第一步是加入一个摄像机的成员变量，这里需要做一点手脚。不能直接为该摄像机变量声明成具体的CADCamera类，因为如果以后有更多的摄像机类了（如果有那一天的话），GLWidget的子类可能会需要另一个摄像机类，这样就需要为摄像机对象的类型留出更改空间。这里就要祭出工厂模式啦（Factory Method），在头文件中定义一个工厂虚函数，和一个指向抽象摄像机类的智能指针成员。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">virtual</span> AbstractCamera* <span class="title">cameraFactory</span><span class="params">()</span></span>; <span class="comment">//“摄像机工厂”</span></span><br><span class="line"><span class="built_in">shared_ptr</span>&lt;AbstractCamera&gt; pCamera;</span><br></pre></td></tr></table></figure>
+
+<p>源文件中实现该工厂函数，在该版本的GLWidget中，工厂建立一个CADCamera对象，并以注意：工厂函数不能在GLWidget构造函数中调用，因为GLWiget的派生类在构造GLWiget类时，派生类本身没有构造完毕，因此调用的永远是GLWiget版本的cameraFactory()。</p>
+<blockquote>
+<p>绝不在构造和析构函数中调用virtual函数——“effective c++, item 9”</p>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">AbstractCamera *GLWidget::cameraFactory()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">new</span> CADCamera(<span class="keyword">this</span>,QVector3D(<span class="number">0.0</span>,<span class="number">0.0</span>,<span class="number">3.0</span>));</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//在初始化函数中调用工厂函数</span></span><br><span class="line">GLWidget::GLWidget(QWidget *parent) : QOpenGLWidget(parent)</span><br><span class="line">&#123;</span><br><span class="line">    father = parent;</span><br><span class="line">    pCamera.reset(cameraFactory());</span><br><span class="line">    init();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Tips"><a href="#Tips" class="headerlink" title="Tips"></a>Tips</h2>
+    </div>
+
+    
+    
+    
+        
+      
+
+      <footer class="post-footer">
+          
+            
+          
+          <div class="post-tags">
+            
+              <a href="/tags/Qt/" rel="tag"># Qt</a>
+            
+              <a href="/tags/OpenGL/" rel="tag"># OpenGL</a>
+            
+              <a href="/tags/图形学/" rel="tag"># 图形学</a>
+            
+              <a href="/tags/设计模式/" rel="tag"># 设计模式</a>
+            
+          </div>
+        
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-next post-nav-item">
+              
+                <a href="/2019/10/25/Qt-OpenGL-搭建基本绘制框架/" rel="next" title="Qt+OpenGL 基本绘制框架搭建">
+                  <i class="fa fa-chevron-left"></i> Qt+OpenGL 基本绘制框架搭建
+                </a>
+              
+            </div>
+
+            <span class="post-nav-divider"></span>
+
+            <div class="post-nav-prev post-nav-item">
+              
+            </div>
+          </div>
+        
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+        
+        
+        
+        
+      
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#摄像机类"><span class="nav-number">1.</span> <span class="nav-text">摄像机类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新的着色器"><span class="nav-number">2.</span> <span class="nav-text">新的着色器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改GLWidget类"><span class="nav-number">3.</span> <span class="nav-text">修改GLWidget类</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Tips"><span class="nav-number">4.</span> <span class="nav-text">Tips</span></a></li></ol></div>
+        
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Winger Zeng</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">7</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-categories">
+        
+          
+            <a href="/categories/">
+          
+        
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">categories</span>
+        </a>
+      </div>
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/">
+          
+        
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">tags</span>
+        </a>
+      </div>
+    
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Winger Zeng</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> v3.9.0
+  </div>
+  <span class="post-meta-divider">|</span>
+  <div class="theme-info">
+      
+    Theme – <a href="https://pisces.theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a> v7.4.1
+  </div>
+
+<div class="busuanzi_count">
+	<span id="busuanzi_container_site_uv">
+		本站惨遭踢馆<span id="busuanzi_value_site_uv"></span>人次
+	</span>
+</div>
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js?v=3.1.0"></script>
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+<script src="/js/utils.js?v=7.4.1"></script><script src="/js/motion.js?v=7.4.1"></script>
+<script src="/js/schemes/pisces.js?v=7.4.1"></script>
+<script src="/js/next-boot.js?v=7.4.1"></script>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
