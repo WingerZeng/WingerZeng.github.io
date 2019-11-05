@@ -390,7 +390,7 @@ td {
   -ms-user-select: none;
   -webkit-user-select: none;
   user-select: none;
-  color: #fff;
+  color: #000;
   font-size: 14px;
   right: 0;
   top: 2px;
@@ -1185,7 +1185,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #06ff39;
+  background: #864e7a;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
