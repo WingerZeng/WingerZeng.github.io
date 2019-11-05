@@ -55,18 +55,18 @@
   };
 </script>
 
-  <meta name="description" content="Google浏览器缓存真的是个大坑，当在后台更新了网页的内容，但打开网页一看还跟原来一毛一样，说不定就是浏览器缓存在作祟。下面是几种解决方法：一、设置浏览器不缓存方法1. Google浏览器中，F12打开控制台—&amp;gt;Network—-&amp;gt;Disable cache 打钩方法2. 在浏览器按F12—&amp;gt;在按下F1—&amp;gt;找到network —-&amp;gt; Disable cache（wh">
+  <meta name="description" content="Google浏览器缓存真的是个大坑，当在后台更新了网页的内容，但打开网页一看还跟原来一毛一样，这种无妄之灾会对人的心理造成很大的伤害。下面是几种解决方法：">
 <meta name="keywords" content="建站,博客">
 <meta property="og:type" content="article">
 <meta property="og:title" content="搭建博客时的浏览器缓存问题">
 <meta property="og:url" content="http://wingerzeng.com/2019/11/05/搭建博客时的浏览器缓存问题/index.html">
 <meta property="og:site_name" content="winger训练营">
-<meta property="og:description" content="Google浏览器缓存真的是个大坑，当在后台更新了网页的内容，但打开网页一看还跟原来一毛一样，说不定就是浏览器缓存在作祟。下面是几种解决方法：一、设置浏览器不缓存方法1. Google浏览器中，F12打开控制台—&amp;gt;Network—-&amp;gt;Disable cache 打钩方法2. 在浏览器按F12—&amp;gt;在按下F1—&amp;gt;找到network —-&amp;gt; Disable cache（wh">
+<meta property="og:description" content="Google浏览器缓存真的是个大坑，当在后台更新了网页的内容，但打开网页一看还跟原来一毛一样，这种无妄之灾会对人的心理造成很大的伤害。下面是几种解决方法：">
 <meta property="og:locale" content="en">
 <meta property="og:updated_time" content="2019-11-05T13:47:51.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="搭建博客时的浏览器缓存问题">
-<meta name="twitter:description" content="Google浏览器缓存真的是个大坑，当在后台更新了网页的内容，但打开网页一看还跟原来一毛一样，说不定就是浏览器缓存在作祟。下面是几种解决方法：一、设置浏览器不缓存方法1. Google浏览器中，F12打开控制台—&amp;gt;Network—-&amp;gt;Disable cache 打钩方法2. 在浏览器按F12—&amp;gt;在按下F1—&amp;gt;找到network —-&amp;gt; Disable cache（wh">
+<meta name="twitter:description" content="Google浏览器缓存真的是个大坑，当在后台更新了网页的内容，但打开网页一看还跟原来一毛一样，这种无妄之灾会对人的心理造成很大的伤害。下面是几种解决方法：">
   <link rel="canonical" href="http://wingerzeng.com/2019/11/05/搭建博客时的浏览器缓存问题/">
 
 
@@ -317,9 +317,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>Google浏览器缓存真的是个大坑，当在后台更新了网页的内容，但打开网页一看还跟原来一毛一样，说不定就是浏览器缓存在作祟。</p><p>下面是几种解决方法：</p><h2 id="一、设置浏览器不缓存"><a href="#一、设置浏览器不缓存" class="headerlink" title="一、设置浏览器不缓存"></a>一、设置浏览器不缓存</h2><p>方法1. Google浏览器中，F12打开控制台—&gt;Network—-&gt;Disable cache 打钩<br>方法2. 在浏览器按F12—&gt;在按下F1—&gt;找到network —-&gt; Disable cache（while DevTools is open） 打钩</p><a id="more"></a>
-
-
+        <p>Google浏览器缓存真的是个大坑，当在后台更新了网页的内容，但打开网页一看还跟原来一毛一样，这种无妄之灾会对人的心理造成很大的伤害。下面是几种解决方法：</p>
+<a id="more"></a>
+<h2 id="一、设置浏览器不缓存"><a href="#一、设置浏览器不缓存" class="headerlink" title="一、设置浏览器不缓存"></a>一、设置浏览器不缓存</h2><p>方法1. Google浏览器中，F12打开控制台—&gt;Network—-&gt;Disable cache 打钩<br>方法2. 在浏览器按F12—&gt;在按下F1—&gt;找到network —-&gt; Disable cache（while DevTools is open） 打钩</p>
 <h2 id="二、清空缓存"><a href="#二、清空缓存" class="headerlink" title="二、清空缓存"></a>二、清空缓存</h2><p>ctrl+shift+delete  —-&gt; 清除浏览数据</p>
 <h2 id="三、强制刷新"><a href="#三、强制刷新" class="headerlink" title="三、强制刷新"></a>三、强制刷新</h2><p>ctrl + F5强制刷新</p>
 <h2 id="客户端缓存问题"><a href="#客户端缓存问题" class="headerlink" title="客户端缓存问题"></a>客户端缓存问题</h2><p>以上方法都是从网站开发者的角度解决的，但网站的访客并不懂这么多，下面讲讲怎么让客户端的浏览器不储存网页缓存。<br>有两种方法：</p>
@@ -328,6 +328,9 @@
 <li>把请求头上的Last-Modified时间总是改为当前时间，浏览器就会认为网页被修改了。从而更新缓存。</li>
 </ol>
 <p>两种方法还没有在hexo博客上进行实践过，应该用一个js脚本就可以做到吧。</p>
+<blockquote>
+<p>参考资料：<a href="https://my.oschina.net/zimingforever/blog/134914?fromerr=5ygd55ZT" target="_blank" rel="noopener">https://my.oschina.net/zimingforever/blog/134914?fromerr=5ygd55ZT</a><br><a href="http://blog.httpwatch.com/2007/12/10/two-simple-rules-for-http-caching/" target="_blank" rel="noopener">http://blog.httpwatch.com/2007/12/10/two-simple-rules-for-http-caching/</a></p>
+</blockquote>
 
     </div>
 
