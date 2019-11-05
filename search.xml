@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>搭建博客时的浏览器缓存问题</title>
+    <url>/2019/11/05/%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E6%97%B6%E7%9A%84%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<p>Google浏览器缓存真的是个大坑，当在后台更新了网页的内容，但打开网页一看还跟原来一毛一样，说不定就是浏览器缓存在作祟。</p><p>下面是几种解决方法：</p><h2 id="一、设置浏览器不缓存"><a href="#一、设置浏览器不缓存" class="headerlink" title="一、设置浏览器不缓存"></a>一、设置浏览器不缓存</h2><p>方法1. Google浏览器中，F12打开控制台—&gt;Network—-&gt;Disable cache 打钩<br>方法2. 在浏览器按F12—&gt;在按下F1—&gt;找到network —-&gt; Disable cache（while DevTools is open） 打钩</p><a id="more"></a>
+
+
+<h2 id="二、清空缓存"><a href="#二、清空缓存" class="headerlink" title="二、清空缓存"></a>二、清空缓存</h2><p>ctrl+shift+delete  —-&gt; 清除浏览数据</p>
+<h2 id="三、强制刷新"><a href="#三、强制刷新" class="headerlink" title="三、强制刷新"></a>三、强制刷新</h2><p>ctrl + F5强制刷新</p>
+<h2 id="客户端缓存问题"><a href="#客户端缓存问题" class="headerlink" title="客户端缓存问题"></a>客户端缓存问题</h2><p>以上方法都是从网站开发者的角度解决的，但网站的访客并不懂这么多，下面讲讲怎么让客户端的浏览器不储存网页缓存。<br>有两种方法：</p>
+<ol>
+<li>在请求头上使用Cache-Control: no-cache，可以让浏览器不缓存页面信息，但如果对于firefox，要使用Cache-Control: no-cache, no-store。</li>
+<li>把请求头上的Last-Modified时间总是改为当前时间，浏览器就会认为网页被修改了。从而更新缓存。</li>
+</ol>
+<p>两种方法还没有在hexo博客上进行实践过，应该用一个js脚本就可以做到吧。</p>
+]]></content>
+      <categories>
+        <category>建站</category>
+      </categories>
+      <tags>
+        <tag>建站</tag>
+        <tag>博客</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Qt+OpenGL 3.类体系优化</title>
     <url>/2019/10/27/Qt-OpenGL-3-%E7%B1%BB%E4%BD%93%E7%B3%BB%E4%BC%98%E5%8C%96/</url>
     <content><![CDATA[<p>由于是初次尝试面向对象的编程，觉得之前搭建的结构有诸多不妥之处。因此进行一次整理优化。</p>
@@ -171,8 +194,8 @@
         <category>PTA</category>
       </categories>
       <tags>
-        <tag>PTA</tag>
         <tag>算法</tag>
+        <tag>PTA</tag>
       </tags>
   </entry>
   <entry>
@@ -204,8 +227,8 @@
         <category>PTA</category>
       </categories>
       <tags>
-        <tag>PTA</tag>
         <tag>算法</tag>
+        <tag>PTA</tag>
       </tags>
   </entry>
   <entry>
@@ -219,8 +242,8 @@
         <category>PTA</category>
       </categories>
       <tags>
-        <tag>PTA</tag>
         <tag>算法</tag>
+        <tag>PTA</tag>
       </tags>
   </entry>
   <entry>
@@ -231,8 +254,8 @@
         <category>PTA</category>
       </categories>
       <tags>
-        <tag>PTA</tag>
         <tag>算法</tag>
+        <tag>PTA</tag>
       </tags>
   </entry>
   <entry>
