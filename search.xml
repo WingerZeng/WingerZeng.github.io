@@ -1,6 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Qt+OpenGL 4. 摄像机设定旋转中心</title>
+    <url>/2019/11/09/Qt-OpenGL-4-%E6%91%84%E5%83%8F%E6%9C%BA%E8%AE%BE%E5%AE%9A%E6%97%8B%E8%BD%AC%E4%B8%AD%E5%BF%83/</url>
+    <content><![CDATA[<p>许多CAD的软件中，都有设定摄像机旋转中心的功能，今天我就来实现这一功能。</p><h2 id="基本思路"><a href="#基本思路" class="headerlink" title="基本思路"></a>基本思路</h2><p>首先考虑一个简单的问题：要把摄像机的旋转中心设在点A处，应该怎么做？</p><p>思路很简单：</p><ol>
+<li>把点A移到摄像机原点处</li>
+<li>再进行视角变换，旋转变换就都是绕点A的了。</li>
+</ol><a id="more"></a>
+
+
+
+<p>转换成OpenGL摄像机矩阵的代码就是：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">QMatrix4x4 CADCamera::getViewMatrix()&#123;</span><br><span class="line">    QMatrix4x4 viewMat;</span><br><span class="line">    viewMat.lookAt(Position,Position+Front,Up);</span><br><span class="line">    viewMat.translate(-rotateCenter);</span><br><span class="line">    <span class="keyword">return</span> viewMat;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>首先获取摄像机原本的lookat矩阵，然后在其<strong>左边</strong>乘上一个平移矩阵，该矩阵将旋转中心的坐标移到原点处。用公式表达就是：<br><code>viewMatrix = lookAt * translateMatrix</code></p>
+<p>这里再加上一个参数：translate向量。该向量是一个二维向量，之前用在摄像机的平移中。translate.x()为正代表画面向右平移，为负代表画面向左平移，y方向同理。加上translate的函数如下：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line">QMatrix4x4 CADCamera::getViewMatrix()</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">//摄像机平移后的坐标</span></span><br><span class="line">    QVector3D transPos=-translate.x()*Right - translate.y()*Up + Position;</span><br><span class="line">    QMatrix4x4 viewMat;</span><br><span class="line">    viewMat.lookAt(transPos,transPos+Front,Up);</span><br><span class="line">    viewMat.translate(-rotateCenter);</span><br><span class="line">    <span class="keyword">return</span> viewMat;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在后面设定旋转中心的过程中，也要用到translate向量。</p>
+<h2 id="设定前后画面衔接"><a href="#设定前后画面衔接" class="headerlink" title="设定前后画面衔接"></a>设定前后画面衔接</h2><p>经过处理的摄像机矩阵已经能以设定点为中心旋转了。但还有个关键问题，我们进行了一个平移操作，这个操作会改变物体在摄像机中的位置，导致前后画面会出现一个突变。在我们的设想中，设定旋转中心不会对画面造成影响，因此需要进一步的衔接。</p>
+<p>我们先不妨假设在设定前，摄像机的视野中心即为原先的旋转中心（称为O1）。而设定旋转中心后，新旋转中心（称为O2）被平移矩阵移到原点处，而O1也进行了相应的平移。我们要做的就是将点O1仍置于摄像机的视野中心。<br><img src="https://wingerzengimage.oss-cn-beijing.aliyuncs.com/img/20191109224001.png"><br>一个很直观方法是将摄像机从原位置1直接平移到位置3处（如红线所示），即平移摄像机的位置变量Position，而不改变其他变量。这个方法确实可行，也比较简单，但我个人不大喜欢，因为这样就让摄像机在旋转时不是看向原点的，略有些怪异。</p>
+<p>代码如下：</p>
+<figure class="highlight cpp"><table><tr><td class="code"><pre><span class="line"><span class="keyword">void</span> CADCamera::setCenter(QVector3D pos)</span><br><span class="line">&#123;</span><br><span class="line">    QVector3D centerTrans=pos-rotateCenter;</span><br><span class="line">    rotateCenter=pos;</span><br><span class="line">    Position-=centerTrans;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>第二种方法如蓝线所示，先延Front向量的方向平移摄像机（1-2），平移后，摄像机的中心仍看向原点；之后再调整translate参数，来使摄像机“看似”位于位置3处。这个相机位置+偏移量的形式可以让相机在旋转时总是看向原点，即相机的Front向量总是等于-Position。最后再通过加偏移量来平移画面。</p>
+<p>实现过程如下：</p>
+<ol>
+<li>我们称旋转中心的平移向量为V，首先将摄像机向前平移V点乘Front的距离</li>
+<li>计算摄像机水平方向的偏移，将translate向量的x分量加上V点乘Right的值</li>
+<li>计算摄像机垂直方向的偏移，将translate向量的y分量加上V点乘Up的值</li>
+</ol>
+<p>代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">void CADCamera::setCenter(QVector3D pos)</span><br><span class="line">&#123;</span><br><span class="line">    QVector3D centerTrans=pos-rotateCenter;</span><br><span class="line">    rotateCenter=pos;</span><br><span class="line">    Position-=QVector3D::dotProduct(centerTrans,Front)*Front;</span><br><span class="line">    translate[0]+=QVector3D::dotProduct(Right,centerTrans);</span><br><span class="line">    translate[1]+=QVector3D::dotProduct(Up,centerTrans);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样就实现了旋转中心的设定，至于用哪个方法，看个人喜好吧。</p>
+<h2 id="效果展示"><a href="#效果展示" class="headerlink" title="效果展示"></a>效果展示</h2><p>由于还没写点选的功能，所以只能手动输旋转中心啦。<br><img src="https://wingerzengimage.oss-cn-beijing.aliyuncs.com/img/123.gif" width="70%"></p>
+]]></content>
+      <categories>
+        <category>OpenGL</category>
+      </categories>
+      <tags>
+        <tag>Qt</tag>
+        <tag>OpenGL</tag>
+        <tag>图形学</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>搭建博客时的浏览器缓存问题</title>
     <url>/2019/11/05/%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E6%97%B6%E7%9A%84%E6%B5%8F%E8%A7%88%E5%99%A8%E7%BC%93%E5%AD%98%E9%97%AE%E9%A2%98/</url>
     <content><![CDATA[<p>Google浏览器缓存真的是个大坑，当在后台更新了网页的内容，但打开网页一看还跟原来一毛一样，这种无妄之灾会对人的心理造成很大的伤害。下面是几种解决方法：</p>
